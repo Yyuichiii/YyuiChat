@@ -106,33 +106,7 @@
               You: Hi, how are you?
             </div>
 
-            <div class="alert alert-secondary message-right" role="alert">
             
-              You: Hi, how are you?
-            </div>
-            <div class="alert alert-secondary message-right" role="alert">
-            
-              You: Hi, how are you?
-            </div>
-            <div class="alert alert-secondary message-right" role="alert">
-            
-              You: Hi, how are you?
-            </div>
-
-            <div class="alert alert-secondary message-right" role="alert">
-            
-              You: Hi, how are you?
-            </div>
-
-            <div class="alert alert-secondary message-right" role="alert">
-            
-              You: Hi, how are you?
-            </div>
-
-            <div class="alert alert-secondary message-right" role="alert">
-            
-              You: Hi,yggf
-            </div>
             <!-- Add more chat messages as needed -->
           </div>
           <div class="card-footer">
@@ -171,7 +145,10 @@
   //Handle WebSocket Receive
   ws.onmessage = function (evt) { 
     var received_msg = evt.data;
-    console.log(evt.data);
+    console.log("idhr aaya");
+    
+    // Add the receive message to the chat messages
+    addMessageToChatReceiver("User", evt.data);
   };
    
   document.getElementById("messageForm").addEventListener("submit", function(event) {
@@ -211,6 +188,20 @@ function addMessageToChat(sender, message) {
   chatMessages.insertBefore(messageElement, chatMessages.firstChild);
 }
     
+function addMessageToChatReceiver(receiver, message) {
+  var chatMessages = document.getElementById("chatMessages");
+  
+  // Create a new message element
+  var tt = document.createElement("div");
+  tt.className = "alert alert-primary message-left";
+  tt.setAttribute("role", "alert");
+  tt.textContent = receiver + ": " + message;
+  
+  console.log(tt)
+  // Append the new message element to the chat messages
+  chatMessages.insertBefore(tt, chatMessages.firstChild);
+}
+
  </script> 
 </body>
 </html>
