@@ -1,0 +1,84 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YyuiChat | Register </title>
+
+    <!--Css Bootstrap-->
+    <link rel="stylesheet" href="{% static 'Chat/css/bootstrap.css' %}">
+
+    <!--Custom Css-->
+    <link rel="stylesheet" href="{% static 'Chat/css/style.css' %}">
+    
+    <style>
+      
+  
+      .cc {
+          border-radius: 10px;
+          margin-top: 20px;
+          
+          max-width: 600px;         
+          margin: 0 auto;
+          background:white;
+          box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
+          padding: 10px 30px;
+         
+      }
+      .outer_cont{
+        height: 100vh;
+        width: 100%;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        background-image: radial-gradient(
+          circle farthest-corner at 10% 20%,
+          rgba(253, 101, 133, 1) 0%,
+          rgba(255, 211, 165, 1) 90%
+        );
+      }
+      
+
+  
+  </style>
+  </head>
+  <body>
+    <div class="outer_cont">
+      <div class="container cc">
+        <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+          <h3 style="text-align: center;color: rgb(19, 18, 18);">Create Account</h3>
+            <form method="post" action="{% url 'register' %}" class="row g-3" novalidate>
+                {% csrf_token %}
+                {% for field in form %}
+              <div class="col-md-12">
+                <div class="form-floating mb-3">
+                      {{ field }}
+                      <label for="{{ field.id_for_label }}">{{ field.label }}</label> 
+                </div>
+                <p class="error">{{ field.errors|striptags }}</p>
+              </div>
+  
+                      
+              {% endfor %}
+  
+              {% if form.non_field_errors %} 
+              {% for error in form.non_field_errors %}
+              <p class="alert alert-danger my-3">{{error}}</p>
+              {% endfor %} {% endif %}
+              <div class="d-grid gap-2 col-6 mx-auto">
+                  <button class="btn btn-primary" type="submit">Submit</button>
+              </div>
+  
+          
+            </form>
+           
+            <div class="container mt-4 text-center">
+              Already have an Account?? <a href="{% url 'login' %}" class="alert-link text-primary">Login Now</a>.
+            </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

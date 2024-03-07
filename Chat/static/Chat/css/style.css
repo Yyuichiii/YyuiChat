@@ -1,0 +1,25 @@
+.error{
+    color: red;
+    font-weight: 800;
+}
+
+.message-right {
+    text-align: right;
+    width:100%;
+  }
+  .chat-messages {
+    height: 400px; /* Adjust height as needed */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+ 
+  .user-list {
+    max-height: calc(100vh - 100px); /* Adjust height as needed */
+    overflow-y: auto;
+  }
+
+  .card-header {
+    font-weight: bold;
+    color: #343a40; /* Dark color */
+  }
