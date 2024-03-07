@@ -1,6 +1,6 @@
 from channels.consumer import AsyncConsumer
 from channels.exceptions import StopConsumer
-class EchoConsumer(AsyncConsumer):
+class MyConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
         print("1")
@@ -13,7 +13,7 @@ class EchoConsumer(AsyncConsumer):
         print(event)
         await self.send({
             "type": "websocket.send",
-            "text": event["text"],
+            "text": "Message from the server",
         })
 
     async def websocket_disconnect(self, event):
