@@ -36,7 +36,7 @@
               {% if user == receiver %}
               <a href="{% url 'message' user.pk %}" class="list-group-item list-group-item-action active">
                 {{user}}
-                <span class="float-right">Latest Message</span>
+                <span class="float-right"></span>
               </a>
               {% else %}
               <a href="{% url 'message' user.pk %}" class="list-group-item list-group-item-action">
@@ -106,7 +106,7 @@
   //Handle WebSocket Receive
   ws.onmessage = function (evt) { 
     var received_msg = evt.data;
-    console.log("idhr aaya");
+    
     
     // Add the receive message to the chat messages
     addMessageToChatReceiver("{{receiver}}", evt.data);

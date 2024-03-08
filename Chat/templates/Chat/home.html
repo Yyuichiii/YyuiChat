@@ -12,6 +12,8 @@
   <!--Custom Css-->
   <link rel="stylesheet" href="{% static 'Chat/css/style.css' %}">
 
+  
+
 </head>
 <body>
   <div class="container-fluid">
@@ -35,7 +37,7 @@
               {% for user in users %}
               <a href="{% url 'message' user.pk %}" class="list-group-item list-group-item-action">
                 {{user}}
-                <span class="float-right">Latest Message</span>
+                <span class="float-right" id="test{{user.pk}}">Latest Message</span>
               </a>
               {% endfor %}
 
@@ -53,6 +55,7 @@
       
     </div>
   </div>
+  
 
 <script>
   // Let us open a web socket
@@ -73,6 +76,13 @@
     console.log("WebSocket connection closed:", event);
   };
    
+  //Handle WebSocket Receive
+  ws.onmessage = function (evt) { 
+    var received_msg = evt.data;
+    
+    console.log(received_msg)
+    document.getElementById('test').innerHTML = received_msg;
+  };
   
 
  </script> 

@@ -34,14 +34,22 @@ class MyConsumer(AsyncConsumer):
         message_data = json.loads(json_message)
 
         receiver_channel=await self.Get_Channel_name(message_data['user'])
-        # Get the channel layer
-        channel_layer = self.channel_layer
 
-        # Send the message asynchronously
-        await channel_layer.send(receiver_channel,{
-            "type": "websocket.send_to_receiver",
-            "text": message_data['text'],
+        if receiver_channel is None:
+            await self.send({
+                'type': 'websocket.send',
+                'text': 'is Not Online'
                 })
+        else:
+
+            # Get the channel layer
+            channel_layer = self.channel_layer
+
+            # Send the message asynchronously
+            await channel_layer.send(receiver_channel,{
+                "type": "websocket.send_to_receiver",
+                "text": message_data['text'],
+                    })
         print("-------------4----------------")
        
 
@@ -66,8 +74,12 @@ class MyConsumer(AsyncConsumer):
 
     @database_sync_to_async
     def Get_Channel_name(self,receiver):
-        receive=ChatLog.objects.get(user=receiver)
+        receive=ChatLog.objects.filter(user=receiver).first()
+        if receive is None:
+            return None
         return receive.channel_name
+    
+        
     
     async def websocket_send_to_receiver(self, event):
         
