@@ -130,6 +130,7 @@
       // Your message content
       "user": {{receiver.pk}},
       "text": message,
+      "receive_name":"{{receiver}}",
     };
 
     // Convert the message object to a JSON string
@@ -160,14 +161,17 @@ function addMessageToChat(sender, message) {
     
 function addMessageToChatReceiver(receiver, message) {
   var chatMessages = document.getElementById("chatMessages");
+
+  // Parse the JSON string into a JavaScript object
+  var jsonData = JSON.parse(message);
   
   // Create a new message element
   var tt = document.createElement("div");
   tt.className = "alert alert-primary message-left";
   tt.setAttribute("role", "alert");
-  tt.textContent = receiver + ": " + message;
+  tt.textContent = receiver + ": " + jsonData.text;
   
-  console.log(tt)
+  
   // Append the new message element to the chat messages
   chatMessages.insertBefore(tt, chatMessages.firstChild);
 }

@@ -32,10 +32,14 @@ class MyConsumer(AsyncConsumer):
         
         json_message = event.get("text", "")
         message_data = json.loads(json_message)
+        print(message_data)
+        message_data_send=json.dumps(message_data)
+        print(message_data_send)
 
         receiver_channel=await self.Get_Channel_name(message_data['user'])
-
+        # This has to work after the database thing is sorted
         if receiver_channel is None:
+            
             await self.send({
                 'type': 'websocket.send',
                 'text': 'is Not Online'
@@ -48,7 +52,8 @@ class MyConsumer(AsyncConsumer):
             # Send the message asynchronously
             await channel_layer.send(receiver_channel,{
                 "type": "websocket.send_to_receiver",
-                "text": message_data['text'],
+                "text": message_data_send,
+            
                     })
         print("-------------4----------------")
        
@@ -86,4 +91,5 @@ class MyConsumer(AsyncConsumer):
         # Send message to WebSocket
         await self.send({
         'type':'websocket.send',
-        'text': event['text']})
+        'text': event['text'],
+        })

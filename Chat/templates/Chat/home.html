@@ -12,10 +12,24 @@
   <!--Custom Css-->
   <link rel="stylesheet" href="{% static 'Chat/css/style.css' %}">
 
-  
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
 </head>
 <body>
+  <!--Notification-->
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+    <div id="notificationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+        <div class="toast-header">
+            <strong class="me-auto" id="notification_receive">Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="notification">
+            Hello, world! This is a notification toast message.
+        </div>
+    </div>
+</div>
+
   <div class="container-fluid">
     <div class="row">
       <!-- Sidebar -->
@@ -81,9 +95,19 @@
     var received_msg = evt.data;
     
     console.log(received_msg)
-    document.getElementById('test').innerHTML = received_msg;
+
+    // Parse the JSON string into a JavaScript object
+    var jsonData = JSON.parse(received_msg);
+
+    
+    // Initialize the toast
+    var notificationToastEl = document.getElementById('notificationToast');
+    var notificationToast = new bootstrap.Toast(notificationToastEl);
+    document.getElementById('notification').innerHTML = jsonData.text;
+    document.getElementById('notification_receive').innerHTML = jsonData.receive_name;
+    // Show the toast
+    notificationToast.show();
   };
-  
 
  </script> 
 </body>
