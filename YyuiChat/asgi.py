@@ -10,13 +10,13 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'YyuiChat.settings')
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-     "websocket":AllowedHostsOriginValidator(
+     "websocket":
          AuthMiddlewareStack(
              URLRouter([
                 path("chat/", MyConsumer.as_asgi()),
                 
             ])
          )
-     )     
+        
     
 })

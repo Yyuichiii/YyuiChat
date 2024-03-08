@@ -1,12 +1,16 @@
 from django.shortcuts import render,redirect
 from .forms import UserRegisterForm,LoginForm
 from django.contrib.auth import login,logout,authenticate,update_session_auth_hash
+from django.contrib.auth.models import User
 
 def home(request):
     if not request.user.is_authenticated:
         return redirect('login')
     
-    return render(request,"Chat/home.html")
+    # Fetch all users excluding the current user
+    users = User.objects.exclude(pk=request.user.pk)
+    
+    return render(request,"Chat/home.html",{'users':users})
 
 
 def login_view(request):
@@ -47,3 +51,10 @@ def register(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+def message_view(request,pk):
+    # Fetch all users excluding the current user
+    users = User.objects.exclude(pk=request.user.pk)
+    receiver=User.objects.get(pk=pk)
+    return render(request,"Chat/message.html",{'users':users,'receiver':receiver})
