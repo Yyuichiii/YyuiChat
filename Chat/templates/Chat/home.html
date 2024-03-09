@@ -35,7 +35,7 @@
       <!-- Sidebar -->
       <div class="col-md-3">
         <div class="card">
-          <div class="card-header" >
+          <div class="card-header font-weight-bold display-4">
             {{request.user}}
           </div>
           <div class="card-body user-list">
@@ -51,18 +51,23 @@
               {% for user in users %}
               <a href="{% url 'message' user.pk %}" class="list-group-item list-group-item-action">
                 {{user}}
-                <span class="float-right" id="test{{user.pk}}">Latest Message</span>
+                
+                <span class="float-right" id="test{{user.pk}}" style="float: right;">
+                  <div class="circle-icon">0</div>
+                </span>
+            
               </a>
+              
               {% endfor %}
 
               
               <!-- Add more users as needed -->
             </div>
           </div>
-          <div class="card-footer ">
+          <div class="card-footer">
+            <a href="{% url 'home' %}" class="btn btn-primary btn-block">Home</a>
             <a href="{% url 'logout' %}" class="btn btn-danger btn-block">Logout</a>
-            
-          </div>
+        </div>
         </div>
       </div>
     

@@ -33,3 +33,14 @@
     background-color: #f8f9fa; /* Light gray background for the body */
     color: #000; /* Black text color */
 }
+
+.circle-icon {
+  display: inline-block;
+  width: 25px; /* Adjust size as needed */
+  height: 25px; /* Adjust size as needed */
+  line-height: 25px; /* Centers the content vertically */
+  text-align: center; /* Centers the content horizontally */
+  border-radius: 50%; /* Makes it a circle */
+  background-color: green; /* Sets the background color */
+  color: white; /* Sets the text color */
+}
