@@ -173,6 +173,9 @@ document.getElementById("imageInput").addEventListener("change", function(event)
       
       // Send the file via WebSocket
       ws.send(file);
+
+      // Add the sent message to the chat messages
+      addImageToChat("You", file);
   }
 });
 
@@ -236,6 +239,34 @@ function addImageToChatReceiver(receiver, received_msg) {
 
   // Append the new message element to the chat messages
   chatMessages.insertBefore(tt, chatMessages.firstChild);
+}
+
+function addImageToChat(sender, message) {
+  var chatMessages = document.getElementById("chatMessages");
+  console.log("wfrd",message);
+  // Create a new image element
+  var img = new Image();
+
+  // Create a blob URL from the received blob
+  var blobUrl = URL.createObjectURL(message);
+
+  // Set the src attribute of the image element to the blob URL
+  img.src = blobUrl;
+
+  // Set the height and width of the image
+  img.height = 100; // Set the desired height (in pixels)
+  img.width = 100; // Set the desired width (in pixels)
+  // Create a new message element
+  var messageElement = document.createElement("div");
+  messageElement.className = "alert alert-secondary message-right";
+  messageElement.setAttribute("role", "alert");
+  messageElement.textContent = sender + ": ";
+
+   // Append the image element to the message element
+   messageElement.appendChild(img);
+  
+  // Append the new message element to the chat messages
+  chatMessages.insertBefore(messageElement, chatMessages.firstChild);
 }
 
  </script> 

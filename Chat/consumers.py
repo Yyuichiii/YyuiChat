@@ -27,21 +27,20 @@ class MyConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data=None, bytes_data=None):
         print("-------------3----------------")
-        # Parse the received JSON-formatted message
-        # json_message = event.get("text", "")
+
+        # this deals with images 
         if bytes_data:
-            print(type(bytes_data))
+            
             await self.send(bytes_data=bytes_data)
             return
-        message_data = json.loads(text_data)
-        # print(message_data)
         
 
+
+        message_data = json.loads(text_data)
         receiver_channel=await self.Get_Channel_name(message_data['receive_id'])
         
         # This has to work after the database thing is sorted
         if receiver_channel is None:
-            print('sf')
             data = {
              "text": "is not online"
                 }
@@ -50,7 +49,6 @@ class MyConsumer(AsyncWebsocketConsumer):
             json_data = json.dumps(data)
             await self.send(text_data=json_data)
         else:
-
             # Get the channel layer
             channel_layer = self.channel_layer
 
