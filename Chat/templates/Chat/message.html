@@ -12,8 +12,19 @@
   <!--Custom Css-->
   <link rel="stylesheet" href="{% static 'Chat/css/style.css' %}">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script src="{% static 'Chat/js/htmx.js' %}"></script>
+
+
+
+
 </head>
 <body>
+  
+  
   <div id="imageContainer"></div>
   <div class="container-fluid">
     <div class="row">
@@ -65,8 +76,32 @@
             Chat with {{receiver}}
           </div>
           <div class="card-body chat-messages" id="chatMessages">
-            <!-- Chat messages will be displayed here -->
             
+            <!-- Chat messages will be displayed here -->
+            {% for msg in message.messages %}
+            <div id="messages_box">
+              {% if msg.sender == receiver %}
+            <div class="alert alert-primary message-left" role="alert">
+              {{receiver}}: {{msg.content}}
+              <sub class="text-muted">{{ msg.timestamp|time }}</sub>
+            </div>
+            {% else %}
+            <div class="alert alert-secondary message-right" role="alert">
+              You: {{msg.content}}
+              <sub class="text-muted">{{ msg.timestamp|time }}</sub>
+            </div>
+            {% endif %}
+            
+          </div>
+            {% endfor %}
+            {% if message.messages.has_next %}
+            <div hx-select="#messages_box" hx-get="?page={{ message.messages.next_page_number }}"   
+              hx-trigger="intersect once"
+              hx-swap="afterend">  </div> 
+              {% endif %}
+
+           
+
             
             <!-- Add more chat messages as needed -->
           </div>
@@ -78,7 +113,7 @@
                       <button class="btn btn-primary" type="submit">Send</button>
                       <!-- Button to trigger image selection -->
                       <label for="imageInput" class="btn btn-secondary">
-                          Insert image
+                        <i class="fa-solid fa-image"></i>
                           <input id="imageInput" type="file" accept="image/*" style="display: none;">
                       </label>
                   </div>
@@ -93,7 +128,7 @@
 <script>
   // Let us open a web socket
   var ws= new WebSocket('ws://'+ window.location.host+'/chat/');
-  console.log(ws)
+
   // Web Socket is connected
   ws.onopen = function() {
     console.log("WebSocket connection established.");
@@ -113,20 +148,15 @@
   ws.onmessage = function (evt) { 
     
     var received_msg = evt.data;
-    console.log(typeof(received_msg));
 
-    if (typeof evt.data === 'string') {
+    if (typeof received_msg === 'string') {
       // Add the receive message to the chat messages
-    addMessageToChatReceiver("{{receiver}}", evt.data);
-  } else {
-      // Code B: Run if evt.data is not a string
-    addImageToChatReceiver("{{receiver}}", evt.data);
-      // Your code for handling non-string data goes here
-  }
-
-  
-    
-    
+      addMessageToChatReceiver("{{receiver}}", received_msg);
+    } 
+    else {
+      
+      addImageToChatReceiver("{{receiver}}", received_msg);
+    }    
   };
    
   document.getElementById("messageForm").addEventListener("submit", function(event) {
@@ -141,7 +171,6 @@
         return;
       }
       
-  
     // Send data to the server via WebSocket
     var messageObject = {
       // Your message content
@@ -168,11 +197,23 @@ document.getElementById("imageInput").addEventListener("change", function(event)
   var file = event.target.files[0]; // Get the selected file
   console.log(file);
   if (file) {
-      // Set WebSocket binaryType to "blob" to handle binary data
-      ws.binaryType = "blob";
-      
-      // Send the file via WebSocket
-      ws.send(file);
+       // Set WebSocket binaryType to "blob" to handle binary data
+       
+       ws.binaryType = "blob";
+
+       // Convert the user ID to bytes
+       var userIdBytes = new TextEncoder().encode("{{ receiver.pk }}:");
+
+       // Concatenate user ID bytes and file data bytes
+       var combinedData = new Uint8Array(userIdBytes.length + file.size);
+       combinedData.set(userIdBytes);
+       
+       var fileReader = new FileReader();
+       fileReader.onload = function(event) {
+           combinedData.set(new Uint8Array(event.target.result), userIdBytes.length);
+           ws.send(combinedData);
+       };
+       fileReader.readAsArrayBuffer(file);      
 
       // Add the sent message to the chat messages
       addImageToChat("You", file);
@@ -193,6 +234,7 @@ function addMessageToChat(sender, message) {
   chatMessages.insertBefore(messageElement, chatMessages.firstChild);
 }
     
+
 function addMessageToChatReceiver(receiver, message) {
   var chatMessages = document.getElementById("chatMessages");
 
@@ -204,6 +246,8 @@ function addMessageToChatReceiver(receiver, message) {
   tt.className = "alert alert-primary message-left";
   tt.setAttribute("role", "alert");
   tt.textContent = receiver + ": " + jsonData.text;
+
+  
   
   
   // Append the new message element to the chat messages
@@ -268,6 +312,7 @@ function addImageToChat(sender, message) {
   // Append the new message element to the chat messages
   chatMessages.insertBefore(messageElement, chatMessages.firstChild);
 }
+
 
  </script> 
 </body>

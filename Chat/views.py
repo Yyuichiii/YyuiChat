@@ -2,6 +2,9 @@ from django.shortcuts import render,redirect
 from .forms import UserRegisterForm,LoginForm
 from django.contrib.auth import login,logout,authenticate,update_session_auth_hash
 from django.contrib.auth.models import User
+from .models import Chat,Message
+from django.core.paginator import Paginator
+
 
 def home(request):
     if not request.user.is_authenticated:
@@ -56,5 +59,34 @@ def logout_view(request):
 def message_view(request,pk):
     # Fetch all users excluding the current user
     users = User.objects.exclude(pk=request.user.pk)
-    receiver=User.objects.get(pk=pk)
-    return render(request,"Chat/message.html",{'users':users,'receiver':receiver})
+
+    # Get the receiver
+    receiver = User.objects.get(pk=pk)
+
+    # Filter chat where participants include both sender and receiver
+    chat = Chat.objects.filter(participants=receiver).filter(participants=request.user).first()
+
+    print(chat)
+    context = {}
+
+    if chat:
+        # Retrieve messages for the conversation
+        messages = Message.objects.filter(chat=chat).order_by('-timestamp')
+
+        # Mark unread messages as read
+        unread_messages = messages.filter(is_read=False)
+        unread_messages.update(is_read=True)
+        
+        # Paginate the messages to fetch only the latest 10
+        paginator = Paginator(messages, 6)
+        page_number = request.GET.get('page')
+        messages = paginator.get_page(page_number)
+        context = {
+        'messages': messages,
+        
+        }
+
+    print(context)
+
+
+    return render(request,"Chat/message.html",{'users':users,'receiver':receiver,'message':context})
