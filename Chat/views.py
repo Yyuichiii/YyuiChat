@@ -12,8 +12,25 @@ def home(request):
     
     # Fetch all users excluding the current user
     users = User.objects.exclude(pk=request.user.pk)
-    
-    return render(request,"Chat/home.html",{'users':users})
+
+    context_list = []
+
+    for user in users:
+        # Filter chat where participants include both sender and receiver
+        chat = Chat.objects.filter(participants=user).filter(participants=request.user).first()
+        
+        if chat:
+            unread_msg_count = Message.objects.filter(chat=chat, is_read=False).count()
+        else:
+            unread_msg_count = 0
+
+        context_list.append({
+            'user': user,
+            'count': unread_msg_count
+        })
+
+    print(context_list)
+    return render(request, "Chat/home.html", {'users': users, 'context_list': context_list})
 
 
 def login_view(request):
@@ -66,7 +83,6 @@ def message_view(request,pk):
     # Filter chat where participants include both sender and receiver
     chat = Chat.objects.filter(participants=receiver).filter(participants=request.user).first()
 
-    print(chat)
     context = {}
 
     if chat:
@@ -74,7 +90,7 @@ def message_view(request,pk):
         messages = Message.objects.filter(chat=chat).order_by('-timestamp')
 
         # Mark unread messages as read
-        unread_messages = messages.filter(is_read=False)
+        unread_messages = messages.filter(is_read=False,sender=request.user)
         unread_messages.update(is_read=True)
         
         # Paginate the messages to fetch only the latest 10
@@ -85,8 +101,6 @@ def message_view(request,pk):
         'messages': messages,
         
         }
-
-    print(context)
 
 
     return render(request,"Chat/message.html",{'users':users,'receiver':receiver,'message':context})
