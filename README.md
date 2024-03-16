@@ -39,13 +39,19 @@ Yyuichat is a web application built using Django, Django Channels, Redis Channel
     python manage.py migrate
     ```
 
-4. Start the development server:
+4. Start the redis server (For Linux):
+
+    ```bash
+    sudo systemctl start redis-server
+    ```
+
+5. Start the development server:
 
     ```bash
     python manage.py runserver
     ```
 
-5. Access the application in your web browser at `http://localhost:8000`.
+6. Access the application in your web browser at `http://localhost:8000`.
 
 ## Usage
 
