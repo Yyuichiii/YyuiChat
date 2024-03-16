@@ -1,2 +1,5 @@
+1-not all the messages are showing , htmx issue
 
-new issue- pagination not going to the top, not scrooling the top message
+2-ONLINE NOT showing
+
+3-Group Chat not implemented
