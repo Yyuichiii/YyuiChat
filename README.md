@@ -21,37 +21,37 @@ Yyuichat is a web application built using Django, Django Channels, Redis Channel
 
 ## Installation
 
-1. Clone the repository:
+### 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/Yyuichiii/YyuiChat.git
-    ```
+```bash
+git clone https://github.com/Yyuichiii/YyuiChat.git
+```
 
-2. Install the dependencies:
+### 2. Install the dependencies:
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+pip install -r requirements.txt
+```
 
-3. Run migrations:
+### 3. Run migrations:
 
-    ```bash
-    python manage.py migrate
-    ```
+```bash
+python manage.py migrate
+```
 
-4. Start the redis server (For Linux):
+### 4. Start the redis server (For Linux):
 
-    ```bash
-    sudo systemctl start redis-server
-    ```
+```bash
+sudo systemctl start redis-server
+```
 
-5. Start the development server:
+### 5. Start the development server:
 
-    ```bash
-    python manage.py runserver
-    ```
+```bash
+python manage.py runserver
+```
 
-6. Access the application in your web browser at `http://localhost:8000`.
+### 6. Access the application in your web browser at `http://localhost:8000`.
 
 ## Usage
 
