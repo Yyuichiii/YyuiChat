@@ -30,7 +30,6 @@ def home(request):
             'count': unread_msg_count
         })
 
-    print(context_list)
     return render(request, "Chat/home.html", {'context_list': context_list})
 
 
