@@ -20,7 +20,8 @@ def home(request):
         chat = Chat.objects.filter(participants=user).filter(participants=request.user).first()
         
         if chat:
-            unread_msg_count = Message.objects.filter(chat=chat, is_read=False).count()
+            unread_msg_count = Message.objects.filter(chat=chat, is_read=False).exclude(sender=request.user).count()
+
         else:
             unread_msg_count = 0
 
@@ -30,7 +31,7 @@ def home(request):
         })
 
     print(context_list)
-    return render(request, "Chat/home.html", {'users': users, 'context_list': context_list})
+    return render(request, "Chat/home.html", {'context_list': context_list})
 
 
 def login_view(request):
@@ -90,7 +91,7 @@ def message_view(request,pk):
         messages = Message.objects.filter(chat=chat).order_by('-timestamp')
 
         # Mark unread messages as read
-        unread_messages = messages.filter(is_read=False,sender=request.user)
+        unread_messages = Message.objects.filter(is_read=False).exclude(sender=request.user)
         unread_messages.update(is_read=True)
         
         # Paginate the messages to fetch only the latest 10

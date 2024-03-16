@@ -1,11 +1,9 @@
-from channels.consumer import AsyncConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.exceptions import StopConsumer
 from channels.db import database_sync_to_async
-from asgiref.sync import async_to_sync
 from django.contrib.auth.models import User
 from .models import ChatLog,Chat,Message
 import json
-from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 class MyConsumer(AsyncWebsocketConsumer):
@@ -66,17 +64,9 @@ class MyConsumer(AsyncWebsocketConsumer):
         receiver_channel=await self.Get_Channel_name(message_data['receive_id'])
 
 
-        
-        # This has to work after the database thing is sorted
         if receiver_channel is None:
             return
-            # data = {
-            #  "text": "is not online"
-            #     }
             
-            # # Convert the dictionary to a JSON string
-            # json_data = json.dumps(data)
-            # await self.send(text_data=json_data)
         else:
             # Get the channel layer
             channel_layer = self.channel_layer
@@ -94,7 +84,7 @@ class MyConsumer(AsyncWebsocketConsumer):
         user = self.scope["user"]
         await self.delete_user_from_chat_log(user)
         raise StopConsumer()
-        await self.close()
+        
     
 
     @database_sync_to_async

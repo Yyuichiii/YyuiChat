@@ -1,5 +1,2 @@
-receives the message in message.html from an user despite being sent by different user
 
-solve the issue of unread message update
-
-and also reloading the page after few seconds issue
+new issue- pagination not going to the top, not scrooling the top message

@@ -109,15 +109,21 @@
 
     
 
-    // Initialize the toast
-    var notificationToastEl = document.getElementById('notificationToast');
-    var notificationToast = new bootstrap.Toast(notificationToastEl);
-    document.getElementById('notification').innerHTML = jsonData.text;
-    document.getElementById('notification_receive').innerHTML = jsonData.receive_name;
-    // Show the toast
-    notificationToast.show();
+   // Initialize the toast
+var notificationToastEl = document.getElementById('notificationToast');
+var notificationToast = new bootstrap.Toast(notificationToastEl);
 
+// Set the content for the notification
+document.getElementById('notification').innerHTML = jsonData.text;
+document.getElementById('notification_receive').innerHTML = jsonData.receive_name;
+
+// Show the toast
+notificationToast.show();
+
+// Reload the page after 2 seconds
+setTimeout(function() {
     location.reload();
+}, 2000); // 2000 milliseconds = 2 seconds
   };
 
  </script> 
