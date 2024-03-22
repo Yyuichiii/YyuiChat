@@ -17,7 +17,6 @@ Yyuichat is a web application built using Django, Django Channels, Redis Channel
 - **Redis Channel Layer:** Provides the channel layer for Django Channels, enabling communication between multiple instances of Django Channels.
 - **HTML, CSS, Bootstrap:** Frontend technologies for designing and styling the user interface.
 - **JavaScript:** Used for client-side scripting, enabling interactive features.
-- **HTMX:** A JavaScript library that allows you to access AJAX, CSS Transitions, and WebSockets directly in HTML, making building modern web applications faster and easier.
 
 ## Installation
 
@@ -52,6 +51,16 @@ python manage.py runserver
 ```
 
 ### 6. Access the application in your web browser at `http://localhost:8000`.
+
+
+## Screenshots
+
+![Screenshot 1](Screenshots/Screenshot_1.png)
+![Screenshot 2](Screenshots/Screenshot_2.png)
+![Screenshot 3](Screenshots/Screenshot_3.png)
+![Screenshot 4](Screenshots/Screenshot_4.png)
+![Screenshot 5](Screenshots/Screenshot_5.png)
+![Screenshot 6](Screenshots/Screenshot_6.png)
 
 ## Usage
 
