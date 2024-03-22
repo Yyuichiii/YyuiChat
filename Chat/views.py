@@ -93,10 +93,10 @@ def message_view(request,pk):
         unread_messages = Message.objects.filter(is_read=False).exclude(sender=request.user)
         unread_messages.update(is_read=True)
         
-        # Paginate the messages to fetch only the latest 10
-        paginator = Paginator(messages, 6)
-        page_number = request.GET.get('page')
-        messages = paginator.get_page(page_number)
+        # # Paginate the messages to fetch only the latest 10
+        # paginator = Paginator(messages, 6)
+        # page_number = request.GET.get('page')
+        # messages = paginator.get_page(page_number)
         context = {
         'messages': messages,
         

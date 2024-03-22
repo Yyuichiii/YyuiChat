@@ -89,7 +89,7 @@ class MyConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def delete_user_from_chat_log(self,user):
-        chat_log=ChatLog.objects.get(user=user)
+        chat_log=ChatLog.objects.filter(user=user).first()
         chat_log.delete()    
 
     @database_sync_to_async
